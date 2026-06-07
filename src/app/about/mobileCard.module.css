@@ -50,10 +50,10 @@
 }
 
 .cardContainer {
-    width: 90vw;
-    max-width: 380px;
-    height: calc(90vw * 1.39); /* Maintain aspect ratio roughly 380x530 */
-    max-height: 530px;
+    width: 94vw;
+    max-width: 420px;
+    min-height: 85vh;
+    height: 85dvh;
     background-color: #F8E038;
     border-radius: 18px;
     padding: 14px;
@@ -199,7 +199,7 @@
 .imageBox {
     background: #FFF;
     border: 6px solid #D8D8D8;
-    height: clamp(140px, 40vw, 190px);
+    flex: 1; /* stretches to fill remaining height */
     width: 100%;
     box-sizing: border-box;
     box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1), 2px 2px 6px rgba(0, 0, 0, 0.4);
