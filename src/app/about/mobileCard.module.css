@@ -1,0 +1,315 @@
+/* ── PAGE LAYOUT RESET ── */
+.mobileContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    width: 100vw;
+    margin: 0;
+    background-color: #222;
+    font-family: 'Arial', sans-serif;
+    overflow: hidden;
+}
+
+.buttonGroup {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 2rem;
+    z-index: 10;
+}
+
+.btn {
+    padding: 10px 20px;
+    cursor: pointer;
+    background: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 14px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.gyroBtn {
+    background: #4CAF50;
+    color: white;
+}
+
+/* ── TILT EFFECTS ── */
+.tiltWrapper {
+    perspective: 1000px;
+    --ratio-x: 0;
+    --ratio-y: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.cardContainer {
+    width: 90vw;
+    max-width: 380px;
+    height: calc(90vw * 1.39); /* Maintain aspect ratio roughly 380x530 */
+    max-height: 530px;
+    background-color: #F8E038;
+    border-radius: 18px;
+    padding: 14px;
+    box-sizing: border-box;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+    /* Apply tilt transformation */
+    transform: rotateX(calc(var(--ratio-y) * -20deg)) rotateY(calc(var(--ratio-x) * 20deg));
+    transition: transform 0.1s ease-out;
+    /* Smooths out sensor jitter */
+    transform-style: preserve-3d;
+}
+
+/* ── INNER CARD & THEMES ── */
+.innerCard {
+    width: 100%;
+    height: 100%;
+    border-radius: 8px;
+    padding: 12px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    transition: background 0.3s ease;
+}
+
+.themeGreen {
+    background: linear-gradient(145deg, #81C73A, #A6E848, #78B530);
+}
+
+.themeOrange {
+    background: linear-gradient(145deg, #FF6B1A, #FF8C33, #E64A00);
+}
+
+/* ── HEADER ── */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    position: relative;
+    margin-bottom: 8px;
+}
+
+.stageTag {
+    position: absolute;
+    top: -12px;
+    left: -12px;
+    background: white;
+    color: black;
+    font-weight: 900;
+    font-style: italic;
+    font-size: clamp(10px, 3.5vw, 14px);
+    padding: 4px 18px 4px 8px;
+    clip-path: polygon(0 0, 100% 0, 80% 100%, 0 100%);
+    border-top-left-radius: 8px;
+    border-bottom-right-radius: 4px;
+    z-index: 2;
+}
+
+.name {
+    font-size: clamp(14px, 4.5vw, 18px);
+    font-weight: 900;
+    font-style: italic;
+    margin-left: clamp(45px, 15vw, 65px);
+    color: #000;
+    text-shadow: 1px 1px 0px rgba(255, 255, 255, 0.5);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.hpText {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 900;
+    font-size: clamp(14px, 4.5vw, 18px);
+    color: #000;
+    white-space: nowrap;
+}
+
+/* ── SUB-HEADER ── */
+.subHeader {
+    background: linear-gradient(to bottom, #FAFAFA, #C0C0C0);
+    height: 24px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    position: relative;
+    margin-bottom: 12px;
+    border: 1px solid #777;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.evoCircle {
+    width: 44px;
+    height: 44px;
+    background: #FFF;
+    border: 4px solid #D0D0D0;
+    border-radius: 50%;
+    position: absolute;
+    left: -6px;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2), 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.subHeaderText {
+    margin-left: 45px;
+    font-size: 11px;
+    font-weight: bold;
+    font-style: italic;
+    text-transform: uppercase;
+    color: #000;
+}
+
+/* ── IMAGE AREA ── */
+.imageBox {
+    background: #FFF;
+    border: 6px solid #D8D8D8;
+    height: clamp(140px, 40vw, 190px);
+    width: 100%;
+    box-sizing: border-box;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1), 2px 2px 6px rgba(0, 0, 0, 0.4);
+    margin-bottom: 15px;
+    border-radius: 2px;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.profileImage {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* ── ATTACK ZONES ── */
+.attackZone {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    padding: 0 5px;
+    color: #000;
+    gap: 8px;
+}
+
+.attackBlock {
+    text-align: center;
+}
+
+.attackTitle {
+    font-size: clamp(14px, 4vw, 16px);
+    font-weight: 900;
+    font-style: italic;
+    margin: 0 0 4px 0;
+}
+
+.attackDesc {
+    font-size: clamp(9px, 2.5vw, 11px);
+    font-style: italic;
+    line-height: 1.3;
+    margin: 0;
+}
+
+/* ── STATS FOOTER ── */
+.statsFooter {
+    background: linear-gradient(to bottom, #FAFAFA, #C0C0C0);
+    border-radius: 20px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 6px 12px;
+    margin-top: auto;
+    border: 1px solid #777;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.statItem {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    cursor: pointer;
+    text-decoration: none;
+    color: #000;
+}
+
+.statLabel {
+    font-size: 10px;
+    font-style: italic;
+    font-weight: bold;
+}
+
+.statValue {
+    font-size: 12px;
+    font-weight: 900;
+}
+
+/* ── TYPE ICONS ── */
+.typeIcon,
+.typeIconSmall,
+.tinyIcon {
+    border-radius: 50%;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    box-shadow: inset -1px -1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.typeIcon {
+    width: 22px;
+    height: 22px;
+}
+
+.typeIconSmall {
+    width: 16px;
+    height: 16px;
+}
+
+.tinyIcon {
+    width: 12px;
+    height: 12px;
+    margin-right: 4px;
+}
+
+.iconImg {
+    width: 70%;
+    height: 70%;
+    object-fit: contain;
+}
+
+.iconLeaf { background-color: #78C850; }
+.iconFire { background-color: #F08030; }
+.iconLightning { background-color: #F8D030; }
+.iconColorless { background-color: #A8A8A8; }
+.iconDark { background-color: #705848; }
+.iconWater { background-color: #6890F0; }
+.iconFighting { background-color: #C03028; }
+.iconSteel { background-color: #B8B8D0; }
+.iconPsychic { background-color: #F85888; }
+
+/* ── BOTTOM BAR ── */
+.bottomBar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 8px;
+}
+
+.energyIcons {
+    display: flex;
+    align-items: center;
+}
+
+.fakeCardText {
+    font-weight: 900;
+    font-style: italic;
+    font-size: 12px;
+    color: #000;
+}

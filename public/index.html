@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SVG UI Wireframe - Target Design</title>
+<style>
+  :root {
+    --bg-main: #159a97;
+    --bg-grid: #28a9a6;
+    
+    /* Updated Border: Thicker & Darker Grey */
+    --card-border: #3b434c; 
+    --card-inner-border: rgba(222, 240, 235, 0.4); /* Less white/thinner */
+    
+    /* Updated Header: Lighter/Muted */
+    --header-bg: #679b9a; 
+    
+    /* Updated Body: Slightly darker/grey-tinted */
+    --body-bg: #cbe0d8; 
+    
+    /* Updated Footer: Darker teal */
+    --footer-bg: #5a8e8d; 
+    
+    --accent-orange: #f5c485;
+    --accent-teal: #94cfc6;
+    
+    /* New Arc Color: Grey/Silver */
+    --arc-silver: #a8b8bf;
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: var(--bg-main);
+    background-image: 
+      linear-gradient(var(--bg-grid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--bg-grid) 1px, transparent 1px);
+    background-size: 30px 30px;
+    font-family: sans-serif;
+  }
+
+  /* 1. Overall Size/Crop: Larger/zoomed in */
+  .card-wrapper {
+    width: 95vw;
+    max-width: 1050px;
+    height: 85vh;
+    max-height: 650px;
+    background-color: var(--card-border);
+    border-radius: 32px;
+    padding: 22px; /* Thicker border appearance */
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.25);
+  }
+
+  .card-container {
+    width: 100%;
+    height: 100%;
+    border-radius: 12px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    /* 6. Card border/stroke: Less white inner stroke */
+    border: 2px solid var(--card-inner-border);
+  }
+
+  /* ------------------- HEADER ------------------- */
+  .header {
+    height: 90px;
+    background-color: var(--header-bg);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 45px;
+  }
+
+
+  .header-badge {
+    width: 100%;
+    height: 95px;
+    background-color: lab(89.35% 0.09 21.01);
+    border-radius: 14px;
+  }
+
+  /* ------------------- BODY ------------------- */
+  .body {
+    flex-grow: 1;
+    background-color: var(--body-bg);
+    position: relative;
+    background-image: 
+      linear-gradient(rgba(144, 205, 205, 0.5) 2px, transparent 1px),
+      linear-gradient(rgba(49, 115, 95, 0.5) 2px, transparent 1px);
+    background-size: 30px 8px;
+    overflow: hidden;
+  }
+
+  .header-accent-line {
+    position: absolute;
+    top: 45px;
+    left: 45px;
+    width: 55%;
+    height: 3px;
+    background-color:lab(89.35% 3.09 21.01);
+    border-radius: 2px;
+  }
+
+  .arcs-container {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 300px;
+    height: 300px;
+  }
+
+  /* 3. Quarter circle arcs: Grey/Silver */
+  .arc-outer {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 260px;
+    height: 260px;
+    border-top-left-radius: 100%;
+    border-top: 75px solid var(--arc-silver);
+    border-left: 75px solid var(--arc-silver);
+    box-sizing: border-box;
+  }
+
+  .arc-inner {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 120px;
+    height: 120px;
+    border-top-left-radius: 100%;
+    background-color: var(--arc-silver);
+  }
+
+  /* ------------------- FOOTER ------------------- */
+  .footer {
+    height: 110px;
+    background-color: var(--footer-bg);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0 60px;
+    gap: 12px; /* Space between lines and nodes */
+  }
+
+  /* 4. Bottom bar: Two horizontal lines ABOVE the squares */
+  .footer-track-lines {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .footer-track-line {
+    height: 2px;
+    background-color: #467675; /* Darker accent line */
+    width: 100%;
+  }
+
+  .footer-nodes {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  /* 4. Bottom bar: Squares are more muted */
+  .node {
+    width: 38px;
+    height: 38px;
+    background-color: rgba(142, 190, 188, 0.4); /* Muted/semi-transparent */
+    border: 2px solid #82b2b1;
+    border-radius: 6px;
+  }
+</style>
+</head>
+<body>
+
+  <div class="card-wrapper">
+    <div class="card-container">
+      
+      <div class="header">
+
+        <div class="header-badge">        <div class="header-accent-line"></div>
+</div>
+      </div>
+      
+      <div class="body">
+        
+        <div class="arcs-container">
+          <div class="arc-outer"></div>
+          <div class="arc-inner"></div>
+        </div>
+      </div>
+
+      <div class="footer">
+        
+        <div class="footer-track-lines">
+          <div class="footer-track-line"></div>
+          <div class="footer-track-line"></div>
+          <div class="footer-track-line"></div>
+          <div class="footer-track-line"></div>
+          <div class="footer-track-line"></div>
+          <div class="footer-track-line"></div>
+        </div>
+        
+        <div class="footer-nodes">
+          <div class="node"></div>
+          <div class="node"></div>
+          <div class="node"></div>
+          <div class="node"></div>
+          <div class="node"></div>
+          <div class="node"></div>
+          <div class="node"></div>
+          <div class="node"></div>
+        </div>
+        
+      </div>
+
+    </div>
+  </div>
+
+</body>
+</html>

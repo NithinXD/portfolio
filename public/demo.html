@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smooth Scroll Video</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { height: 100%; }
+
+    .scroll-container {
+      height: 500vh; /* Scroll distance for scrubbing */
+      position: relative;
+    }
+
+    .video-wrapper {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #000;
+      overflow: hidden;
+    }
+
+    video { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+    .loading {
+      position: absolute;
+      color: #fff;
+      font-family: system-ui, sans-serif;
+      font-size: 14px;
+      letter-spacing: 0.05em;
+      pointer-events: none;
+      transition: opacity 0.3s;
+    }
+
+    .content-after {
+      padding: 120px 24px;
+      background: #0a0a0a;
+      color: #fff;
+      text-align: center;
+      font-family: system-ui, sans-serif;
+    }
+    .final-overlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0,0,0,0.0);
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.8s ease;
+      color: #fff;
+      font-family: system-ui, sans-serif;
+      mix-blend-mode: normal;
+    }
+
+    .final-overlay.show {
+      opacity: 1;
+      background: rgba(0,0,0,0.6);
+    }
+
+    .final-overlay .message {
+      font-size: 48px;
+      text-align: center;
+      filter: brightness(0.6) saturate(0.9);
+      transition: filter 1s ease, transform 1s ease, opacity 1s ease;
+      opacity: 0;
+      transform: scale(0.96);
+    }
+
+    .final-overlay.show .message {
+      filter: brightness(1.2) saturate(1.1);
+      opacity: 1;
+      transform: scale(1);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="scroll-container">
+    <div class="video-wrapper">
+      <video id="scroll-video" muted playsinline preload="auto">
+        <source src="into.mp4" type="video/mp4">
+      </video>
+      <div class="loading" id="loading">Loading video...</div>
+      <div class="final-overlay" id="finalOverlay" aria-hidden="true">
+        <div class="message">Hi! Welcome to my portfolio page</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="content-after">
+    <h1>Content continues here</h1>
+    <p>Scroll to scrub the video after handoff.</p>
+  </div>
+
+  <script>
+    const video = document.getElementById('scroll-video');
+    const loadingEl = document.getElementById('loading');
+    const AUTO_PLAY_SECONDS = 1.2;
+
+    let mode = 'loading'; // 'loading' | 'auto' | 'reverse' | 'scroll'
+    let isLoaded = false;
+    let scrollAnchor = 0; // pixel anchor when entering scroll
+
+    // Reverse control
+    const REVERSE_SPEED = 1.0; // seconds of video per real second
+    let reverseRaf = null;
+    let reverseLast = 0;
+
+    function enterScrollMode() {
+      if (!isLoaded) return;
+      // cancel reverse
+      if (reverseRaf) {
+        cancelAnimationFrame(reverseRaf);
+        reverseRaf = null;
+      }
+      mode = 'scroll';
+      video.pause();
+
+      // capture scroll anchor
+      const container = document.querySelector('.scroll-container');
+      const rect = container.getBoundingClientRect();
+      scrollAnchor = -rect.top;
+    }
+
+    function startAutoPlay() {
+      mode = 'auto';
+      video.currentTime = 0;
+      video.play().catch(() => {
+        // autoplay blocked, start reversing immediately
+        startReverseMode();
+      });
+    }
+
+    function startReverseMode() {
+      if (mode === 'scroll') return;
+      if (reverseRaf) return;
+      mode = 'reverse';
+      video.pause();
+      reverseLast = performance.now();
+      reverseRaf = requestAnimationFrame(reverseStep);
+    }
+
+    function reverseStep(now) {
+      const delta = (now - reverseLast) / 1000;
+      reverseLast = now;
+      if (mode !== 'reverse') { reverseRaf = null; return; }
+      const dec = delta * REVERSE_SPEED;
+      const next = Math.max(0, video.currentTime - dec);
+      // Setting currentTime repeatedly can jump to nearest keyframe; this is expected in normal browsers
+      video.currentTime = next;
+      if (next > 0) {
+        reverseRaf = requestAnimationFrame(reverseStep);
+      } else {
+        reverseRaf = null;
+        video.pause();
+      }
+    }
+
+    // After AUTO_PLAY_SECONDS, begin reversing instead of pausing
+    video.addEventListener('timeupdate', () => {
+      if (mode === 'auto' && video.currentTime >= AUTO_PLAY_SECONDS) {
+        startReverseMode();
+      }
+    });
+
+    video.addEventListener('loadedmetadata', () => {
+      isLoaded = true;
+      loadingEl.style.opacity = '0';
+      startAutoPlay();
+    });
+
+    // Map scroll to time from AUTO_PLAY_SECONDS -> video.duration
+    let ticking = false;
+    function updateVideoFromScroll() {
+      if (!isLoaded || mode !== 'scroll') return;
+
+      const container = document.querySelector('.scroll-container');
+      const rect = container.getBoundingClientRect();
+      const totalScrollable = container.offsetHeight - window.innerHeight;
+      const currentScroll = -rect.top;
+
+      const scrollableRange = totalScrollable - scrollAnchor;
+      let progress = scrollableRange > 0 ? (currentScroll - scrollAnchor) / scrollableRange : 0;
+      progress = Math.max(0, Math.min(1, progress));
+
+      const startTime = Math.min(AUTO_PLAY_SECONDS, video.duration || 0);
+      const remaining = Math.max(0, (video.duration || 0) - startTime);
+      const newTime = startTime + (progress * remaining);
+      video.currentTime = newTime;
+
+      // If we've reached the end, trigger the final overlay
+      if (progress >= 1) {
+        showFinalOverlay();
+      }
+    }
+
+    window.addEventListener('scroll', () => {
+      // any user scroll switches to scroll mode
+      if (mode !== 'scroll' && isLoaded) enterScrollMode();
+
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          updateVideoFromScroll();
+          ticking = false;
+        });
+        ticking = true;
+      }
+    }, { passive: true });
+
+    // If meta already loaded (file cached), kick off
+    if (video.readyState >= 1) {
+      isLoaded = true;
+      loadingEl.style.opacity = '0';
+      startAutoPlay();
+    }
+
+    // Final overlay control
+    const finalOverlay = document.getElementById('finalOverlay');
+    let finalShown = false;
+    function showFinalOverlay() {
+      if (finalShown) return;
+      finalShown = true;
+      finalOverlay.classList.add('show');
+      finalOverlay.setAttribute('aria-hidden', 'false');
+    }
+
+    // If video plays to end while not scrubbing, show overlay as well
+    video.addEventListener('timeupdate', () => {
+      if (!isLoaded) return;
+      const atEnd = (video.duration - video.currentTime) < 0.05;
+      if (atEnd) showFinalOverlay();
+    });
+  </script>
+
+</body>
+</html>

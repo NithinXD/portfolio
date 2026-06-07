@@ -1,0 +1,380 @@
+/* ==========================================================
+   MAIN LAYOUT — full viewport, no scroll, no header
+========================================================== */
+.main {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: #000;
+  position: relative;
+}
+
+/* ==========================================================
+   SCENE — pixelated wallpaper background
+========================================================== */
+.scene {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  background-image: url('/wallpaper.png');
+  background-size: cover;
+  background-position: center top;
+}
+
+/* ==========================================================
+   MAP ICON — top-right corner, teal/green border frame
+========================================================== */
+.mapIcon {
+  position: absolute;
+  top: 14px;
+  right: 17px;
+  z-index: 30;
+  width: 74px;
+  height: auto;
+  cursor: pointer;
+  transition: transform 0.15s;
+}
+
+.mapIcon:hover {
+  transform: scale(1.08);
+}
+
+.mapIcon img {
+  width: 100%;
+  height: auto;
+  image-rendering: pixelated;
+  display: block;
+  filter: drop-shadow(4px 4px 0 #1a1a1a);
+}
+
+/* ==========================================================
+   CHARACTER — overlaps onto dialog box.
+   Positioned absolutely relative to .main so it spans
+   across both the scene and dialog areas.
+========================================================== */
+.character {
+  position: absolute;
+  bottom: -45px;
+  /* Pushed down to go behind dialog */
+  left: 14px;
+  z-index: 50;
+  /* Lower than dialogBox (which is 60) */
+  animation: smoothFloat 2.8s ease-in-out infinite;
+}
+
+.characterImg {
+  display: block;
+  /* Scaled up ~1.4x */
+  height: clamp(210px, 42vh, 357px);
+  width: auto;
+  image-rendering: pixelated;
+  user-select: none;
+  pointer-events: none;
+}
+
+@keyframes smoothFloat {
+  0% {
+    transform: translateY(0px);
+  }
+
+  25% {
+    transform: translateY(-3px);
+  }
+
+  50% {
+    transform: translateY(-6px);
+  }
+
+  75% {
+    transform: translateY(-3px);
+  }
+
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+/* ==========================================================
+   MENU MODAL — modal.JPG style:
+   orange-red thick border, gold glow edge, rounded, white fill
+========================================================== */
+.menuModal {
+  position: absolute;
+  top: 58%;
+  right: 70px;
+  transform: translateY(-60%) translateX(30px);
+  z-index: 40;
+  opacity: 0;
+  transition:
+    opacity 0.3s ease,
+    transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  pointer-events: none;
+
+  border-radius: 0px;
+  padding: 28px 10px;
+  /* Thicker top/bottom, thinner left/right */
+  border-style: solid;
+  border-color: #1c1e1c;
+  border-width: 4px 8px;
+  /* Thinner top/bottom, thicker left/right */
+  /* Highly saturated red base */
+  background-color: #e62e00;
+  box-shadow:
+    14px 14px 28px rgba(0, 0, 0, 0.5),
+    inset 6px 6px 14px #ff8c66,
+    /* Saturated light highlight */
+    inset -8px -8px 17px #661400;
+  /* Saturated dark shadow */
+  box-sizing: border-box;
+}
+
+.menuModalIn {
+  opacity: 1;
+  transform: translateY(-50%) translateX(0);
+  pointer-events: all;
+}
+
+.menuInner {
+  background-color: #f8f9fa;
+  border-radius: 16px;
+  padding: 32px 16px;
+  /* Increased vertical padding to make it longer */
+  min-width: 170px;
+  box-shadow: 0 0 11px 1px rgba(0, 0, 0, 0.4);
+}
+
+.menuItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  font-family: 'PKMN RBYGSC', monospace;
+  font-size: 26px;
+  color: #1a1a1a;
+  font-weight: bold;
+  -webkit-text-stroke: 0px #1a1a1a;
+  /* Forces pixel font to be bolder */
+  cursor: pointer;
+  border-radius: 8px;
+  transition: background 0.12s;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.menuItem:hover,
+.menuItemActive {
+  background: rgba(180, 80, 0, 0.08);
+}
+
+.menuArrow {
+  color: #b84000;
+  font-size: 18px;
+  width: 14px;
+  flex-shrink: 0;
+}
+
+/* ==========================================================
+   DIALOG BOX — comment.JPG style:
+   dark outer border + thick red/brown vertical strips
+   on LEFT and RIGHT. Tall enough that character torso
+   is above it.
+========================================================== */
+.dialogBox {
+  flex-shrink: 0;
+  position: relative;
+  /* Scaled up ~1.4x */
+  height: clamp(157px, 35vh, 270px);
+  background-color: #ffffff;
+  box-shadow: 0 0 0 5px #1c1e1c;
+  cursor: pointer;
+  display: flex;
+  align-items: stretch;
+  overflow: hidden;
+  box-sizing: border-box;
+  z-index: 60;
+  /* Higher than character so it covers character's bottom */
+}
+
+/* --- THE LEFT SHADED BAR --- */
+.dialogBox::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 23px;
+  /* Scaled down 75% */
+  background: linear-gradient(to right,
+      #290f0a 0%,
+      #8d281a 20%,
+      #b33c2a 65%,
+      #f1b2a9 88%,
+      #ffffff 100%);
+}
+
+/* --- THE RIGHT SHADED BAR --- */
+.dialogBox::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  width: 23px;
+  /* Scaled down 75% */
+  background: linear-gradient(to left,
+      #290f0a 0%,
+      #8d281a 20%,
+      #b33c2a 65%,
+      #f1b2a9 88%,
+      #ffffff 100%);
+}
+
+/* Text content area */
+.dialogContent {
+  flex: 1;
+  padding: 26px 42px;
+  display: flex;
+  align-items: flex-start;
+  z-index: 1;
+  /* Make sure text is above the before/after bars */
+}
+
+.dialogText {
+  font-family: 'PKMN RBYGSC', monospace;
+  font-size: clamp(34px, 6vw, 48px);
+  line-height: 2;
+  color: #1a1a1a;
+  margin: 0;
+}
+
+/* Blinking cursor while typing */
+.cursor {
+  display: inline-block;
+  width: clamp(12px, 2vw, 16px);
+  height: 1em;
+  background: #1a1a1a;
+  margin-left: 4px;
+  vertical-align: text-bottom;
+  animation: blink 0.55s step-end infinite;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+/* Red ▼ after welcome text (deprecated, using SVG now but kept for fallback) */
+.redArrow {
+  color: #CC0000;
+  font-size: 0.85em;
+}
+
+/* ✦Click Me hint */
+.clickHint {
+  color: #888;
+  font-size: 0.55em;
+}
+
+/* Slowly floating SVG triangle */
+.floatArrow {
+  display: inline-block;
+  animation: arrowFloat 1.6s ease-in-out infinite;
+  margin-left: 6px;
+  vertical-align: middle;
+}
+
+.roundedTriangle {
+  width: 0.85em;
+  height: 0.85em;
+  fill: #CC0000;
+}
+
+@keyframes arrowFloat {
+
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(4px);
+  }
+}
+
+/* ==========================================================
+   MAP ANIMATION (Star Sparkle Vanish)
+========================================================== */
+.mapVanish {
+  animation: teamRocketVanish 1.5s ease-in forwards;
+}
+
+@keyframes teamRocketVanish {
+  0% {
+    transform: scale(1) rotate(0deg);
+    filter: drop-shadow(4px 4px 0 #1a1a1a) brightness(1);
+    clip-path: none;
+  }
+
+  35% {
+    /* Spin and shrink away in place */
+    transform: scale(0) rotate(1080deg);
+    filter: drop-shadow(0px 0px 0 #1a1a1a) brightness(1);
+    clip-path: none;
+  }
+
+  36% {
+    /* Instantly become a pure white diamond/star */
+    transform: scale(0) rotate(0deg);
+    filter: brightness(20) drop-shadow(0 0 20px white);
+    clip-path: polygon(50% 0%, 60% 40%, 100% 50%, 60% 60%, 50% 100%, 40% 60%, 0% 50%, 40% 40%);
+  }
+
+  42% {
+    /* The *ting!* twinkle expands */
+    transform: scale(2) rotate(0deg);
+    opacity: 1;
+  }
+
+  50%,
+  100% {
+    /* Twinkle vanishes instantly */
+    transform: scale(0) rotate(0deg);
+    opacity: 0;
+  }
+}
+
+/* ==========================================================
+   MOBILE RESPONSIVENESS
+========================================================== */
+@media (max-width: 768px) {
+
+  /* Only scale down the character a little so it fits better */
+  .characterImg {
+    height: clamp(160px, 30vh, 240px);
+  }
+
+  /* Position modal to top right, keep its normal size */
+  .menuModal {
+    top: 15%;
+    right: 2%;
+    transform: none;
+    /* override desktop translate */
+  }
+
+  .menuModalIn {
+    transform: none;
+  }
+
+  /* Slightly tweak dialog text and padding on mobile to prevent bottom cut-off */
+  .dialogContent {
+    padding: 16px 40px;
+  }
+
+  .dialogText {
+    font-size: clamp(28px, 5vw, 32px);
+    line-height: 1.8;
+  }
+}
