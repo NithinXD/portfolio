@@ -48,7 +48,15 @@ export default function About() {
   };
 
   if (isMobile) {
-    return <MobileAboutCard />;
+    return (
+      <main className={styles.page}>
+        <div className={styles.bgTop}></div>
+        <div className={styles.bgBottom}></div>
+        <div className={styles.bgStripe}></div>
+        <div className={styles.lightOverlay}></div>
+        <MobileAboutCard />
+      </main>
+    );
   }
 
   return (

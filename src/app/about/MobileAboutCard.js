@@ -49,7 +49,14 @@ export default function MobileAboutCard() {
     el.style.setProperty('--ratio-y', ratioY);
   };
 
-  const enableGyro = () => {
+  const toggleGyro = () => {
+    if (useGyro) {
+      window.removeEventListener('deviceorientation', handleOrientation);
+      setUseGyro(false);
+      resetPointerPosition();
+      return;
+    }
+
     if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
       DeviceOrientationEvent.requestPermission()
         .then(permissionState => {
@@ -62,6 +69,7 @@ export default function MobileAboutCard() {
         })
         .catch(console.error);
     } else {
+      // Non-iOS 13+ devices
       window.addEventListener('deviceorientation', handleOrientation);
       setUseGyro(true);
     }
@@ -88,22 +96,18 @@ export default function MobileAboutCard() {
             
             <div className={styles.contentWrapper}>
               <div className={styles.header}>
-                <div className={styles.stageTag}>STAGE 1</div>
+                <div className={styles.stageTag}>2+ YOE</div>
                 <div className={styles.name}>Nithin D</div>
-                <div className={styles.hpText}>
-                  2+ YOE
-                  <span className={`${styles.typeIcon} ${styles.iconLeaf}`}></span>
-                </div>
               </div>
 
               <div 
                 className={styles.subHeader} 
-                onClick={!useGyro ? enableGyro : undefined}
-                style={{ cursor: !useGyro ? 'pointer' : 'default' }}
+                onClick={toggleGyro}
+                style={{ cursor: 'pointer' }}
               >
                 <div className={styles.evoCircle}></div>
                 <div className={styles.subHeaderText}>
-                  {!useGyro ? "TAP FOR GYRO" : "GYRO ACTIVE"}
+                  {!useGyro ? "TAP FOR GYRO" : "TAP TO DISABLE GYRO"}
                 </div>
               </div>
 
