@@ -75,14 +75,6 @@ export default function MobileAboutCard() {
 
   return (
     <div className={styles.mobileContainer}>
-      {!useGyro && (
-        <div className={styles.buttonGroup}>
-          <button className={`${styles.btn} ${styles.gyroBtn}`} onClick={enableGyro}>
-            Enable Gyroscope
-          </button>
-        </div>
-      )}
-
       <div 
         className={styles.tiltWrapper} 
         id="tiltWrapper"
@@ -92,67 +84,60 @@ export default function MobileAboutCard() {
       >
         <div className={styles.cardContainer}>
           <div className={`${styles.innerCard} ${styles.themeGreen}`} id="cardTheme">
-
-            <div className={styles.header}>
-              <div className={styles.stageTag}>STAGE 1</div>
-              <div className={styles.name}>Nithin D</div>
-              <div className={styles.hpText}>
-                2+ YOE
-                <span className={`${styles.typeIcon} ${styles.iconLeaf}`}></span>
+            <div className={styles.glare}></div>
+            
+            <div className={styles.contentWrapper}>
+              <div className={styles.header}>
+                <div className={styles.stageTag}>STAGE 1</div>
+                <div className={styles.name}>Nithin D</div>
+                <div className={styles.hpText}>
+                  2+ YOE
+                  <span className={`${styles.typeIcon} ${styles.iconLeaf}`}></span>
+                </div>
               </div>
-            </div>
 
-            <div className={styles.subHeader}>
-              <div className={styles.evoCircle}></div>
-              <div className={styles.subHeaderText}>Dev & AI Pipelines</div>
-            </div>
+              <div 
+                className={styles.subHeader} 
+                onClick={!useGyro ? enableGyro : undefined}
+                style={{ cursor: !useGyro ? 'pointer' : 'default' }}
+              >
+                <div className={styles.evoCircle}></div>
+                <div className={styles.subHeaderText}>
+                  {!useGyro ? "TAP FOR GYRO" : "GYRO ACTIVE"}
+                </div>
+              </div>
 
             <div className={styles.imageBox}>
               <img src="/final__1_-removebg-preview.png" alt="Profile" className={styles.profileImage} />
             </div>
 
-            <div className={styles.attackZone}>
-              <div className={styles.attackBlock}>
-                <h4 className={styles.attackTitle}>App & Web Dev</h4>
-                <p className={styles.attackDesc}>
-                  Flutter, React, Node, Android, iOS.<br/>
-                  Turn ideas into production-ready experiences.
-                </p>
+              <div className={styles.linksZone}>
+                <a href="https://github.com/NithinxD" target="_blank" rel="noreferrer" className={styles.socialIconBtn}>
+                  <img src="/github.webp" alt="GitHub" className={styles.socialIconImg} />
+                  <span>GitHub</span>
+                </a>
+                <a href="https://www.linkedin.com/in/nithin-deepak-82231a301/" target="_blank" rel="noreferrer" className={styles.socialIconBtn}>
+                  <img src="/linkedin.webp" alt="LinkedIn" className={styles.socialIconImg} />
+                  <span>LinkedIn</span>
+                </a>
+                <a href="mailto:nithindeepak2004@gmail.com" target="_blank" rel="noreferrer" className={styles.socialIconBtn}>
+                  <img src="/gmail.webp" alt="Email" className={styles.socialIconImg} />
+                  <span>Email</span>
+                </a>
               </div>
-              <div className={styles.attackBlock}>
-                <h4 className={styles.attackTitle}>AI & Systems</h4>
-                <p className={styles.attackDesc}>
-                  Langchain, FastAPI, Kubernetes, ML.<br/>
-                  Fleet-tracking to international markets.
-                </p>
-              </div>
-            </div>
 
-            <div className={styles.statsFooter}>
-              <a href="https://github.com/NithinxD" target="_blank" rel="noreferrer" className={styles.statItem}>
-                <span className={styles.statLabel}>GitHub</span>
-                <span className={`${styles.typeIconSmall} ${styles.iconDark}`}></span>
-              </a>
-              <a href="https://www.linkedin.com/in/nithin-deepak-82231a301/" target="_blank" rel="noreferrer" className={styles.statItem}>
-                <span className={styles.statLabel}>LinkedIn</span>
-                <span className={`${styles.typeIconSmall} ${styles.iconLightning}`}></span>
-              </a>
-              <a href="mailto:nithindeepak2004@gmail.com" target="_blank" rel="noreferrer" className={styles.statItem}>
-                <span className={styles.statLabel}>Email</span>
-                <span className={`${styles.typeIconSmall} ${styles.iconWater}`}></span>
-              </a>
-            </div>
-
-            <div className={styles.bottomBar}>
-              <div className={styles.energyIcons}>
-                <span className={`${styles.tinyIcon} ${styles.iconDark}`}></span>
-                <span className={`${styles.tinyIcon} ${styles.iconLightning}`}></span>
-                <span className={`${styles.tinyIcon} ${styles.iconWater}`}></span>
-                <span className={`${styles.tinyIcon} ${styles.iconFighting}`}></span>
-                <span className={`${styles.tinyIcon} ${styles.iconSteel}`}></span>
-                <span className={`${styles.tinyIcon} ${styles.iconPsychic}`}></span>
+              <div className={styles.bioText}>
+                Hi, I'm Nithin & I build apps that ship, scale, and actually make it to the store. 2+ years turning ideas into production-ready mobile experiences across Android, iOS, and AI systems. From fleet-tracking platforms to international markets, I don't just write code — I deliver.
               </div>
-              <div className={styles.fakeCardText}>Trainer Card</div>
+
+              <div className={styles.techBar}>
+                <img src="/React.webp" alt="React" className={styles.techIcon} />
+                <img src="/Node.webp" alt="Node" className={styles.techIcon} />
+                <img src="/flutter-logo-png_seeklogo-354671.webp" alt="Flutter" className={styles.techIcon} />
+                <img src="/fastapi.webp" alt="FastAPI" className={styles.techIcon} />
+                <img src="/langchain-icon-logo-png_seeklogo-611655.webp" alt="Langchain" className={styles.techIcon} />
+                <img src="/Kubernetes.webp" alt="Kubernetes" className={styles.techIcon} />
+              </div>
             </div>
 
           </div>
