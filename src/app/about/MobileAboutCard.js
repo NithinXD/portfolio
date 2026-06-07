@@ -132,8 +132,13 @@ export default function MobileAboutCard() {
                 </a>
               </div>
 
-              <div className={styles.bioText}>
-                Hi, I'm Nithin & I build apps that ship, scale, and actually make it to the store. 2+ years turning ideas into production-ready mobile experiences across Android, iOS, and AI systems. From fleet-tracking platforms to international markets, I don't just write code — I deliver.
+              <div className={styles.bioTextContainer}>
+                <p>Hi, I'm Nithin & I build apps that ship, scale,</p>
+                <p>and actually make it to the store. 2+ years turning</p>
+                <p>ideas into production-ready mobile experiences</p>
+                <p>across Android, iOS, and AI systems.</p>
+                <p>From fleet-tracking platforms to international</p>
+                <p>markets, I don't just write code — I deliver.</p>
               </div>
 
               <div className={styles.techBar}>

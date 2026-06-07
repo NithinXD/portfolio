@@ -52,8 +52,8 @@
 .cardContainer {
     width: 94vw;
     max-width: 420px;
-    min-height: 80vh;
-    height: 80dvh;
+    min-height: 78vh;
+    height: 78dvh;
     background-color: #F8E038;
     border-radius: 18px;
     padding: 14px;
@@ -149,7 +149,7 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    margin-left: clamp(45px, 15vw, 65px);
+    margin-left: clamp(95px, 28vw, 120px);
 }
 
 .hpText {
@@ -261,18 +261,40 @@
     text-shadow: 1px 1px 0px rgba(255, 255, 255, 0.8);
 }
 
-.bioText {
+.bioTextContainer {
     flex: 1;
     display: flex;
+    flex-direction: column;
+    justify-content: center;
     align-items: center;
+    padding: 0 5px;
+    margin-bottom: 10px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.bioTextContainer p {
+    margin: 0;
+    width: 100%;
+    padding-bottom: 4px;
+    margin-bottom: 2px;
+    position: relative;
     font-size: clamp(10px, 3.5vw, 13px);
     font-weight: 800;
     font-style: italic;
     color: #1c1f33;
     text-align: center;
     line-height: 1.4;
-    padding: 0 10px;
-    margin-bottom: 10px;
+    white-space: nowrap;
+}
+
+.bioTextContainer p::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    border-bottom: 2px dashed #9bcbc2;
 }
 
 /* ── TECH BAR ── */
