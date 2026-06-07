@@ -1,6 +1,6 @@
 const https = require('https');
 
-const token = 'figd_SYFOv5jJZmuwrs1CCE3mZCh22xUNlvPiGBtXxNwd';
+const token = 's';
 const fileId = 'qFHNFlPwBqQul0GtnrdSun';
 const nodeId = '0:1';
 
