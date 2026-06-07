@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useCallback } from 'react';
 import styles from './mobileCard.module.css';
 
 export default function MobileAboutCard() {
@@ -27,7 +27,7 @@ export default function MobileAboutCard() {
     el.style.setProperty('--ratio-y', 0);
   };
 
-  const handleOrientation = (event) => {
+  const handleOrientation = useCallback((event) => {
     const el = tiltRef.current;
     if (!el) return;
     
@@ -47,11 +47,10 @@ export default function MobileAboutCard() {
 
     el.style.setProperty('--ratio-x', ratioX);
     el.style.setProperty('--ratio-y', ratioY);
-  };
+  }, []);
 
   const toggleGyro = () => {
     if (useGyro) {
-      window.removeEventListener('deviceorientation', handleOrientation);
       setUseGyro(false);
       resetPointerPosition();
       return;
@@ -61,7 +60,6 @@ export default function MobileAboutCard() {
       DeviceOrientationEvent.requestPermission()
         .then(permissionState => {
           if (permissionState === 'granted') {
-            window.addEventListener('deviceorientation', handleOrientation);
             setUseGyro(true);
           } else {
             alert('Gyroscope permission denied.');
@@ -70,16 +68,20 @@ export default function MobileAboutCard() {
         .catch(console.error);
     } else {
       // Non-iOS 13+ devices
-      window.addEventListener('deviceorientation', handleOrientation);
       setUseGyro(true);
     }
   };
 
   useEffect(() => {
+    if (useGyro) {
+      window.addEventListener('deviceorientation', handleOrientation);
+    } else {
+      window.removeEventListener('deviceorientation', handleOrientation);
+    }
     return () => {
       window.removeEventListener('deviceorientation', handleOrientation);
     };
-  }, []);
+  }, [useGyro, handleOrientation]);
 
   return (
     <div className={styles.mobileContainer}>
